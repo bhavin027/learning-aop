@@ -10,4 +10,9 @@ public class MembershipDAO {
 		return true;
 	}
 	
+	public void gotToSleep() {
+		
+		System.out.println(getClass() +": gotToSleep()");
+	}
+	
 }
