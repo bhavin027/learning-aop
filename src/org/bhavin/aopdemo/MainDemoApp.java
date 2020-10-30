@@ -1,6 +1,7 @@
 package org.bhavin.aopdemo;
 
 import org.bhavin.aopdemo.dao.AccountDAO;
+import org.bhavin.aopdemo.dao.MembershipDAO;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainDemoApp {
@@ -14,14 +15,13 @@ public class MainDemoApp {
 		//get the bean from spring container
 		AccountDAO theAccountDAO = context.getBean("accountDAO", AccountDAO.class);
 		
-		//call the business method
-		theAccountDAO.addAccount();
-		
-		// call again
-		System.out.println("\nLet's call it again");
+		MembershipDAO theMembershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
 		
 		//call the business method
 		theAccountDAO.addAccount();
+		
+		//call the business method
+		theMembershipDAO.addAccount();
 		
 		//close the context
 		context.close();
