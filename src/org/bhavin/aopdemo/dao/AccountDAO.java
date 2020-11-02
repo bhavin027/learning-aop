@@ -43,7 +43,13 @@ public class AccountDAO {
 		this.serviceCode = serviceCode;
 	}
 	
-	public List<Account> findAccounts() {
+	public List<Account> findAccounts(boolean tripwire) {
+		//simulate an exception
+		
+		if(tripwire) {
+			throw new RuntimeException("No soup for you!!!");
+		}
+		
 		List<Account> myAccounts = new ArrayList<>();
 		
 		// create sample account
