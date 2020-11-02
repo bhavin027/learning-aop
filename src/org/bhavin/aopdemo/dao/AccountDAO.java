@@ -1,5 +1,8 @@
 package org.bhavin.aopdemo.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bhavin.aopdemo.Account;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +41,24 @@ public class AccountDAO {
 	public void setServiceCode(String serviceCode) {
 		System.out.println(getClass() +": setServiceCode()");
 		this.serviceCode = serviceCode;
+	}
+	
+	public List<Account> findAccounts() {
+		List<Account> myAccounts = new ArrayList<>();
+		
+		// create sample account
+		Account temp1= new Account("Ronaldinho","Level Ultimate");
+		Account temp2= new Account("Rooney","Level 8");
+		Account temp3= new Account("Jane Dao","Level 5");
+		Account temp4= new Account("Ronaldo","Level 8");
+		
+		// add the to account list
+		myAccounts.add(temp1);
+		myAccounts.add(temp2);
+		myAccounts.add(temp3);
+		myAccounts.add(temp4);
+		
+		return myAccounts;
 	}
 	
 }

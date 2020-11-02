@@ -12,7 +12,7 @@ public class MyApiRequestAspect {
 	
 	@Before("org.bhavin.aopdemo.aspect.AOPExpressions.forDaoPackageNoGetterSetter()")
 	public void performApiRequest () {
-		System.out.println("\n====>>> API Request @Before advice on add*()");
+		System.out.println("\n====>>> API Request @Before advice");
 	}
 	
 }

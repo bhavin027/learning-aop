@@ -20,7 +20,7 @@ public class MainDemoApp {
 		//call the business method
 		Account myAccount = new Account();
 		myAccount.setName("Jane Dao");
-		myAccount.setLevel("Level 10");
+		myAccount.setLevel("Level 5");
 		theAccountDAO.addAccount(myAccount, true);
 		theAccountDAO.doWork();
 		

@@ -12,7 +12,7 @@ public class MyLogToCloudAspect {
 
 	@Before("org.bhavin.aopdemo.aspect.AOPExpressions.forDaoPackageNoGetterSetter()")
 	public void logToCloud () {
-		System.out.println("\n====>>> Cloud logging @Before advice on add*()");
+		System.out.println("\n====>>> Cloud logging @Before advice");
 	}
 	
 }
