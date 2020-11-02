@@ -1,11 +1,14 @@
 package org.bhavin.aopdemo.aspect;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -18,13 +21,15 @@ import org.springframework.stereotype.Component;
 @Order(3)
 public class MyDemoLoggingAspect {
 	
+	private Logger myLogger = Logger.getLogger(getClass().getName());
+	
 	@Before("org.bhavin.aopdemo.aspect.AOPExpressions.forDaoPackageNoGetterSetter()")
 	public void beforeAddAcountAdvice(JoinPoint theJoinPoint) {
-		System.out.println("\n====>>> Executing @Before advice");
+		myLogger.info("\n====>>> Executing @Before advice");
 		
 		// display the method signature
 		MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
-		System.out.println("Method: "+methodSig);
+		myLogger.info("Method: "+methodSig);
 		
 		// display method arguements
 		// get args
@@ -32,13 +37,13 @@ public class MyDemoLoggingAspect {
 		
 		//loop thru args
 		for(Object tempArgs: args) {
-			System.out.println(tempArgs);
+			myLogger.info(tempArgs.toString());
 			
 			if(tempArgs instanceof Account) {
 				Account theAccount = (Account) tempArgs;
 				
-				System.out.println("Account name: "+ theAccount.getName());
-				System.out.println("Account level: "+ theAccount.getLevel());
+				myLogger.info("Account name: "+ theAccount.getName());
+				myLogger.info("Account level: "+ theAccount.getLevel());
 			}
 		}
 		
@@ -53,10 +58,10 @@ public class MyDemoLoggingAspect {
 		
 		//print out which method we are advising on
 		String method = theJoinPoint.getSignature().toShortString();
-		System.out.println("\n====>>>Executing @AfterReturning on method: "+method);
+		myLogger.info("\n====>>>Executing @AfterReturning on method: "+method);
 		
 		//print out the results of method call
-		System.out.println("Result: "+ result);
+		myLogger.info("Result: "+ result);
 		
 		// post-process the data (modify data)
 		if(!(result.isEmpty())) {
@@ -82,18 +87,41 @@ public class MyDemoLoggingAspect {
 	public void afterThrowingFindAccountsAdvice(JoinPoint theJoinPoint, Throwable theExc) {
 		//print method we are advising on
 		String method = theJoinPoint.getSignature().toShortString();
-		System.out.println("\n====>>>Executing @AfterThrowing on method: "+method);
+		myLogger.info("\n====>>>Executing @AfterThrowing on method: "+method);
 		//log the exception
-		System.out.println("Exception: "+theExc);
+		myLogger.info("Exception: "+theExc);
 	}
 	
 	@After("execution(* org.bhavin.aopdemo.dao.AccountDAO.findAccounts(..))")
 	public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint) {
 		//print method we are advising on
 		String method = theJoinPoint.getSignature().toShortString();
-		System.out.println("\n====>>>Executing @After(finally) on method: "+method);
+		myLogger.info("\n====>>>Executing @After(finally) on method: "+method);
 		
 	}
 	
+	@Around("execution(* org.bhavin.aopdemo.service.*.getFortune(..))")
+	public Object aroundGetFortune(
+			ProceedingJoinPoint theProceedingJoinPoint) throws Throwable {
+		
+		//print method we are advising on
+		String method = theProceedingJoinPoint.getSignature().toShortString();
+		myLogger.info("\n====>>>Executing @Around on method: "+method);
+		
+		// get begin timestamp
+		long beginTime = System.currentTimeMillis();
+		
+		//execute the method
+		Object result = theProceedingJoinPoint.proceed();
+		
+		//get end timestamp
+		long endTime = System.currentTimeMillis();
+		
+		//compute duration and display it
+		long durationTask = endTime - beginTime;
+		myLogger.info("\n====>>> Time taken: "+durationTask/1000.0+" Seconds");
+		
+		return result;
+	}
 	
 }
